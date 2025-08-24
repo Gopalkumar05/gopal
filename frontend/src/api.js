@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: "https://gopal-tf8i.onrender.com/api",
 });
 
 export function setAuthToken(token) {
