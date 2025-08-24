@@ -12,6 +12,7 @@ from jose import jwt, JWTError
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 
+
 MONGO_URI = os.getenv("MONGO_URI", "mongodb+srv://gk7380494:MNkeUCdbXJDStaAR@cluster0.6jrtbez.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 DB_NAME = os.getenv("DB_NAME", "myapp")
 SECRET_KEY = os.getenv("SECRET_KEY", "change_this_secret")
@@ -124,9 +125,13 @@ async def me(current_user: dict = Depends(get_user_from_token)):
 
 
 
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
+
+app.mount("/", StaticFiles(directory="dist", html=True), name="dist")
+
+# Sab unmatched routes React ke index.html pe bhejo
 @app.get("/{full_path:path}")
 async def serve_react_app(full_path: str):
-    return FileResponse("static/index.html")
+    return FileResponse("dist/index.html")
+
 
