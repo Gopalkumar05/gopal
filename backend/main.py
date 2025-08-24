@@ -9,7 +9,8 @@ from pydantic import BaseModel, EmailStr
 from motor.motor_asyncio import AsyncIOMotorClient
 from passlib.context import CryptContext
 from jose import jwt, JWTError
-
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 MONGO_URI = os.getenv("MONGO_URI", "mongodb+srv://gk7380494:MNkeUCdbXJDStaAR@cluster0.6jrtbez.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 DB_NAME = os.getenv("DB_NAME", "myapp")
@@ -120,3 +121,12 @@ async def login(payload: LoginIn):
 async def me(current_user: dict = Depends(get_user_from_token)):
 
     return {"id": current_user["id"], "name": current_user["name"], "email": current_user["email"]}
+
+
+
+app.mount("/", StaticFiles(directory="static", html=True), name="static")
+
+@app.get("/{full_path:path}")
+async def serve_react_app(full_path: str):
+    return FileResponse("static/index.html")
+
